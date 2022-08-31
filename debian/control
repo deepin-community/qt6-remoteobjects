@@ -1,0 +1,101 @@
+Source: qt6-remoteobjects
+Section: libs
+Priority: optional
+Maintainer: Deepin Developer <deepin-dev@deepin.org>
+Uploaders: Deepin Packages Builder <packages@deepin.org>
+Build-Depends: cmake (>= 3.18~),
+               debhelper-compat (= 13),
+               libgl-dev,
+               libqt6opengl6-dev (>= 6.2.4~),
+               libssl-dev,
+               libvulkan-dev [linux-any],
+               ninja-build,
+               pkg-config,
+               pkg-kde-tools,
+               qml6-module-qtquick (>= 6.2.4~),
+               qml6-module-qttest (>= 6.2.4~),
+               qt6-base-dev (>= 6.2.4~),
+               qt6-base-private-dev (>= 6.2.4~),
+               qt6-declarative-dev (>= 6.2.4~),
+               qt6-declarative-private-dev (>= 6.2.4~),
+               xauth <!nocheck>,
+               xvfb <!nocheck>,
+Standards-Version: 4.6.0
+Homepage: https://www.qt.io/developers/
+Rules-Requires-Root: no
+
+Package: libqt6remoteobjects6
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Qt 6 Remote Objects library
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ Qt Remote Objects extends Qt's existing functionalities to enable
+ information exchange between processes or computers.
+ .
+ This package contains the shared library for Qt Remote Objects.
+
+Package: libqt6remoteobjectsqml6
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Qt 6 Remote Objects QML library
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ Qt Remote Objects extends Qt's existing functionalities to enable
+ information exchange between processes or computers.
+ .
+ This package contains the shared library for Qt Remote Objects QML.
+
+Package: libqt6remoteobjects6-bin
+Architecture: any
+Section: utils
+Multi-Arch: foreign
+Depends: libqt6remoteobjects6 (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: Qt 6 Remote Objects - the Replica Compiler (repc)
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ Qt Remote Objects extends Qt's existing functionalities to enable
+ information exchange between processes or computers.
+ .
+ The Replica Compiler (repc) generates QObject header files based on an API
+ definition file.
+
+Package: qml6-module-qtremoteobjects
+Architecture: any
+Multi-Arch: same
+Depends: qml6-module-qtquick (>= 6.2.4~),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: Qt 6 Remote Objects QML module
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ Qt Remote Objects extends Qt's existing functionalities to enable
+ information exchange between processes or computers.
+ .
+ This package provides the QML module for Qt Remote Objects.
+
+Package: qt6-remoteobjects-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libqt6remoteobjects6 (= ${binary:Version}),
+         libqt6remoteobjects6-bin (= ${binary:Version}),
+         libqt6remoteobjectsqml6 (= ${binary:Version}),
+         qt6-base-dev,
+         ${misc:Depends},
+Description: Qt 6 Remote Objects - development files
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ Qt Remote Objects extends Qt's existing functionalities to enable
+ information exchange between processes or computers.
+ .
+ This package contains the development files for Qt Remote Objects.
