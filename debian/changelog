@@ -1,3 +1,9 @@
+qt6-remoteobjects (6.2.4.2-1+dde) UNRELEASED; urgency=medium
+
+  * Add riscv64 symbol file
+
+ -- Han Gao <gaohan@iscas.ac.cn>  Tue, 10 Jan 2023 19:52:23 +0800
+
 qt6-remoteobjects (6.2.4.1-1+dde) stable; urgency=medium
 
   * Adapt to V23.
