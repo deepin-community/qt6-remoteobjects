@@ -1,40 +1,5 @@
-#
 # Copyright (C) 2019 The Qt Company Ltd.
-# Contact: https://www.qt.io/licensing/
-#
-# This file is part of the QtRepc module of the Qt Toolkit.
-#
-# $QT_BEGIN_LICENSE:LGPL$
-# Commercial License Usage
-# Licensees holding valid commercial Qt licenses may use this file in
-# accordance with the commercial license agreement provided with the
-# Software or, alternatively, in accordance with the terms contained in
-# a written agreement between you and The Qt Company. For licensing terms
-# and conditions see https://www.qt.io/terms-conditions. For further
-# information use the contact form at https://www.qt.io/contact-us.
-#
-# GNU Lesser General Public License Usage
-# Alternatively, this file may be used under the terms of the GNU Lesser
-# General Public License version 3 as published by the Free Software
-# Foundation and appearing in the file LICENSE.LGPL3 included in the
-# packaging of this file. Please review the following information to
-# ensure the GNU Lesser General Public License version 3 requirements
-# will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
-#
-# GNU General Public License Usage
-# Alternatively, this file may be used under the terms of the GNU
-# General Public License version 2.0 or (at your option) the GNU General
-# Public license version 3 or any later version approved by the KDE Free
-# Qt Foundation. The licenses are as published by the Free Software
-# Foundation and appearing in the file LICENSE.GPL2 and LICENSE.GPL3
-# included in the packaging of this file. Please review the following
-# information to ensure the GNU General Public License requirements will
-# be met: https://www.gnu.org/licenses/gpl-2.0.html and
-# https://www.gnu.org/licenses/gpl-3.0.html.
-#
-# $QT_END_LICENSE$
-
-# With a macOS framework Qt build, moc needs to be passed -F<framework-path> arguments to resolve
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 # framework style includes like #include <QtCore/qobject.h>
 # Extract the location of the Qt frameworks by querying the imported location of QtRemoteObjects
 # framework parent directory.
@@ -75,6 +40,12 @@ function(_qt_internal_add_repc_files type target)
     set(repc_incpath) ########### TODO
 
     _qt_internal_get_remote_objects_framework_path_moc_options(extra_moc_options)
+    _qt_internal_get_tool_wrapper_script_path(tool_wrapper)
+    set(repc_command
+        COMMAND
+            "${tool_wrapper}"
+            "$<TARGET_FILE:${QT_CMAKE_EXPORT_NAMESPACE}::repc>"
+    )
     foreach(it ${ARGS_SOURCES})
         get_filename_component(outfilename ${it} NAME_WE)
         get_filename_component(extension ${it} EXT)
@@ -98,10 +69,7 @@ function(_qt_internal_add_repc_files type target)
 
         add_custom_command(
             OUTPUT ${outfile}
-            ${QT_TOOL_PATH_SETUP_COMMAND}
-            COMMAND
-                ${QT_CMAKE_EXPORT_NAMESPACE}::repc
-                ${debug} -o ${type} ${repc_incpath} ${infile} ${outfile}
+            ${repc_command} ${debug} -o ${type} ${repc_incpath} ${infile} ${outfile}
             MAIN_DEPENDENCY ${infile}
             DEPENDS ${QT_CMAKE_EXPORT_NAMESPACE}::repc
             VERBATIM
@@ -141,6 +109,12 @@ endfunction()
 function(qt6_reps_from_headers target)
     list(POP_FRONT ARGV)
     _qt_internal_get_remote_objects_framework_path_moc_options(extra_moc_options)
+    _qt_internal_get_tool_wrapper_script_path(tool_wrapper)
+    set(repc_command
+        COMMAND
+            "${tool_wrapper}"
+            "$<TARGET_FILE:${QT_CMAKE_EXPORT_NAMESPACE}::repc>"
+    )
 
     foreach(it ${ARGV})
         get_filename_component(outfilename ${it} NAME_WE)
@@ -155,10 +129,9 @@ function(qt6_reps_from_headers target)
         list(APPEND outfiles ${qtro_moc_files})
         set(outfile ${CMAKE_CURRENT_BINARY_DIR}/${outfilename}.rep)
         add_custom_command(OUTPUT ${outfile}
-                           ${QT_TOOL_PATH_SETUP_COMMAND}
-                           COMMAND ${QT_CMAKE_EXPORT_NAMESPACE}::repc
-                           -o rep ${infile} ${outfile}
+                           ${repc_command} -o rep ${infile} ${outfile}
                            MAIN_DEPENDENCY ${infile}
+                           DEPENDS ${QT_CMAKE_EXPORT_NAMESPACE}::repc
                            VERBATIM)
         list(APPEND outfiles ${outfile})
     endforeach()

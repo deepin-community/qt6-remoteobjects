@@ -1,12 +1,140 @@
-qt6-remoteobjects (6.2.4.1-1+dde) stable; urgency=medium
+qt6-remoteobjects (6.4.2-5) unstable; urgency=medium
 
-  * Adapt to V23.
-  * Update symbols.
+  * Team upload to unstable.
 
- -- Lu YaNing <luyaning@uniontech.com>  Sun, 09 Oct 2022 16:46:55 +0800
+ -- Lisandro Damián Nicanor Pérez Meyer <lisandro@debian.org>  Tue, 01 Aug 2023 13:30:55 -0300
 
-qt6-remoteobjects (6.2.4-1+dde) stable; urgency=medium
+qt6-remoteobjects (6.4.2-4) experimental; urgency=medium
 
-  * ['Rebuild  against by  current gcc 11.2']
+  * Team upload.
 
- -- Deepin Packages Builder <packages@deepin.org>  Wed, 31 Aug 2022 14:58:38 +0800
+  [ Patrick Franz ]
+  * Remove build-dependency on libqt6opengl6-dev as it has been merged
+    into qt6-base-dev.
+
+  [ Lisandro Damián Nicanor Pérez Meyer ]
+  * Add documentation and examples packages (Closes: #1042283).
+
+ -- Lisandro Damián Nicanor Pérez Meyer <lisandro@debian.org>  Fri, 28 Jul 2023 19:33:15 -0300
+
+qt6-remoteobjects (6.4.2-3) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Helmut Grohne ]
+  * Fix FTCBFS: Use the build repc and also build it for host
+   (Closes: #1040717).
+
+ -- Lisandro Damián Nicanor Pérez Meyer <lisandro@debian.org>  Wed, 12 Jul 2023 19:03:52 -0300
+
+qt6-remoteobjects (6.4.2-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Pass QT_HOST_PATH to cmake in cross-builds, thx to Helmut Grohne.
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 22 Jun 2023 00:06:36 +0200
+
+qt6-remoteobjects (6.4.2-1) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Switch to the official 6.4.2 tarball, the tarball is the same.
+  * Enable link time optimization.
+
+ -- Patrick Franz <deltaone@debian.org>  Sun, 22 Jan 2023 11:37:39 +0100
+
+qt6-remoteobjects (6.4.2~rc1-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Fri, 30 Dec 2022 16:58:48 +0100
+
+qt6-remoteobjects (6.4.2~rc1-1) experimental; urgency=medium
+
+  [ Lisandro Damián Nicanor Pérez Meyer ]
+  * New upstream release.
+    - Bump Qt build dependencies.
+  * Bump standards version, no changes required.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 27 Dec 2022 22:27:22 +0100
+
+qt6-remoteobjects (6.4.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.4.1).
+  * Bump Qt B-Ds to 6.4.1.
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 17 Nov 2022 19:56:40 +0100
+
+qt6-remoteobjects (6.4.0-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.4.0).
+  * Bump Qt B-Ds to 6.4.0.
+  * Increase CMake verbosity level.
+  * Bump minimum CMake version in order to get pkg-config's .pc files.
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Sat, 15 Oct 2022 18:18:37 +0200
+
+qt6-remoteobjects (6.3.1-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Mon, 15 Aug 2022 19:23:38 +0200
+
+qt6-remoteobjects (6.3.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.3.1).
+  * Bump Qt B-Ds to 6.3.1.
+  * Bump Standards-Version to 4.6.1 (no changes needed).
+  * Update list of installed files.
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Sun, 17 Jul 2022 18:13:40 +0200
+
+qt6-remoteobjects (6.3.0-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.3.0).
+  * Bump Qt B-Ds to 6.3.0.
+  * Update list of installed files.
+
+ -- Patrick Franz <deltaone@debian.org>  Wed, 15 Jun 2022 22:06:23 +0200
+
+qt6-remoteobjects (6.2.4-2) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Fri, 22 Apr 2022 20:07:09 +0200
+
+qt6-remoteobjects (6.2.4-1) experimental; urgency=medium
+
+  [ Lu YaNing ]
+  * New upstream release (6.2.4).
+  * Bump Qt B-Ds to 6.2.4.
+
+ -- Lu YaNing <dluyaning@gmail.com>  Thu, 31 Mar 2022 13:34:25 +0000
+
+qt6-remoteobjects (6.2.2-3) unstable; urgency=medium
+
+  [ Patrick Franz ]
+  * Upload to unstable.
+
+ -- Patrick Franz <deltaone@debian.org>  Tue, 15 Feb 2022 22:44:40 +0100
+
+qt6-remoteobjects (6.2.2-2) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Mon, 06 Dec 2021 09:04:01 +0100
+
+qt6-remoteobjects (6.2.2-1) experimental; urgency=medium
+
+  * Initial release (Closes: #999892)
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 18 Nov 2021 08:11:29 +0100

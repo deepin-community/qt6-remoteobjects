@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 Ford Motor Company
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtRemoteObjects module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 Ford Motor Company
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "../../shared/testutils.h"
 
@@ -50,6 +25,8 @@
 #include "rep_tcpdatacenter_source.h"
 #include "rep_localdatacenter_replica.h"
 #include "rep_tcpdatacenter_replica.h"
+
+#include "../../shared/testutils.h"
 
 #define SET_NODE_NAME(obj) (obj).setName(QLatin1String(#obj))
 
@@ -216,7 +193,7 @@ private slots:
 #ifdef __QNXNTO__
         QTest::newRow("qnx") << QUrl(QLatin1String("qnx:replica")) << QUrl(QLatin1String("qnx:registry"));
 #endif
-        QTest::newRow("local") << QUrl(QLatin1String("local:replicaLocalIntegration")) << QUrl(QLatin1String("local:registryLocalIntegration"));
+        QTest::newRow("local") << QUrl(QLatin1String(LOCAL_SOCKET ":replicaLocalIntegration")) << QUrl(QLatin1String(LOCAL_SOCKET ":registryLocalIntegration"));
 #ifdef Q_OS_LINUX
         QTest::newRow("localabstract") << QUrl(QLatin1String("localabstract:replicaAbstractIntegration")) << QUrl(QLatin1String("localabstract:registryAbstractIntegration"));
 #endif
@@ -351,7 +328,7 @@ private slots:
             QSignalSpy spy(tc_rep.data(), &TestClassReplica::classEnumChanged);
             QVERIFY(spy.isValid());
             tc_rep->pushClassEnum(TestClassReplica::Two);
-            QVERIFY(spy.count() || spy.wait());
+            QVERIFY(spy.size() || spy.wait());
 
             QCOMPARE(qint32(tc.classEnum()), qint32(tc_rep->classEnum()));
         }
@@ -479,7 +456,7 @@ private slots:
         QSignalSpy spy(engine_r.data(), &QRemoteObjectReplica::stateChanged);
         host->disableRemoting(&e);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
 
         instances = client->instances<EngineReplica>();
         QCOMPARE(instances, QStringList({"Engine2"}));
@@ -532,8 +509,8 @@ private slots:
         QSignalSpy clientSpy(client->registry(), &QRemoteObjectRegistry::remoteObjectAdded);
 
         host->enableRemoting(&e1, engine1);
-        QTRY_COMPARE(hostSpy.count(), 1);
-        QTRY_COMPARE(clientSpy.count(), 1);
+        QTRY_COMPARE(hostSpy.size(), 1);
+        QTRY_COMPARE(clientSpy.size(), 1);
         QCOMPARE(hostObserver.value(), host->registry()->sourceLocations());
         QCOMPARE(clientObserver.value(), client->registry()->sourceLocations());
         QCOMPARE(hostObserver.value(), clientObserver.value());
@@ -543,8 +520,8 @@ private slots:
 
         expectedSourceLocations[engine2] = { QStringLiteral("Engine"), hostUrl };
         host->enableRemoting(&e2, engine2);
-        QTRY_COMPARE(hostSpy.count(), 2);
-        QTRY_COMPARE(clientSpy.count(), 2);
+        QTRY_COMPARE(hostSpy.size(), 2);
+        QTRY_COMPARE(clientSpy.size(), 2);
         QCOMPARE(hostObserver.value(), host->registry()->sourceLocations());
         QCOMPARE(clientObserver.value(), client->registry()->sourceLocations());
         QCOMPARE(hostObserver.value(), clientObserver.value());
@@ -559,8 +536,8 @@ private slots:
         QSignalSpy srcRemovedClientSpy(client->registry(),
                                        &QRemoteObjectRegistry::remoteObjectRemoved);
 
-        QTRY_COMPARE(srcRemovedHostSpy.count(), 1);
-        QTRY_COMPARE(srcRemovedClientSpy.count(), 1);
+        QTRY_COMPARE(srcRemovedHostSpy.size(), 1);
+        QTRY_COMPARE(srcRemovedClientSpy.size(), 1);
         QCOMPARE(hostObserver.value(), host->registry()->sourceLocations());
         QCOMPARE(clientObserver.value(), client->registry()->sourceLocations());
         QCOMPARE(hostObserver.value(), clientObserver.value());
@@ -751,7 +728,7 @@ private slots:
         QSignalSpy addedSpy(host->registry(), &QRemoteObjectRegistry::remoteObjectAdded);
         setupRegistry();
         bool added = addedSpy.wait();
-        QVERIFY(spy.count() > 0);
+        QVERIFY(spy.size() > 0);
         QCOMPARE(added, true);
         QCOMPARE(host->registry()->sourceLocations().keys().isEmpty(), false);
         QCOMPARE(host->registry()->sourceLocations().keys().at(0), QStringLiteral("Engine"));
@@ -792,8 +769,8 @@ private slots:
         e.setRpm(2345);
 
         spy.wait();
-        QCOMPARE(spy.count(), 1);
-        const QList<QVariant> &arguments = spy.first();
+        QCOMPARE(spy.size(), 1);
+        const QVariantList &arguments = spy.first();
         bool ok;
         int res = arguments.at(0).toInt(&ok);
         QVERIFY(ok);
@@ -821,8 +798,8 @@ private slots:
              });
         e.setRpm(3456);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
-        const QList<QVariant> &arguments = spy.first();
+        QCOMPARE(spy.size(), 1);
+        const QVariantList &arguments = spy.first();
         bool ok;
         int res = arguments.at(0).toInt(&ok);
         QVERIFY(ok);
@@ -879,7 +856,7 @@ private slots:
         QRemoteObjectPendingCallWatcher watcher(reply);
         QSignalSpy spy(&watcher, &QRemoteObjectPendingCallWatcher::finished);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
 
         QVERIFY(reply.isFinished());
         QCOMPARE(reply.returnValue(), true);
@@ -1034,7 +1011,7 @@ private slots:
         QSignalSpy spy(engine_r.data(), &EngineReplica::rpmChanged);
         engine_r->setRpm(42);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
         QCOMPARE(engine_r->rpm(), 42);
     }
 
@@ -1052,7 +1029,7 @@ private slots:
         QSignalSpy spy(engine_r.data(), &EngineReplica::startedChanged);
         engine_r->pushStarted(true);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
         QCOMPARE(engine_r->started(), true);
     }
 
@@ -1075,7 +1052,7 @@ private slots:
         QSignalSpy spy(engine_dr.data(), QByteArray(QByteArrayLiteral("2")+mp.notifySignal().methodSignature().constData()));
         mp.write(engine_dr.data(), 44);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
         QCOMPARE(mp.read(engine_dr.data()).toInt(), 44);
     }
 
@@ -1095,7 +1072,7 @@ private slots:
         QSignalSpy spy(engine_r.data(), &EngineReplica::rpmChanged);
         engine_r->increaseRpm(1000);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
         QCOMPARE(engine_r->rpm(), 1000);
     }
 
@@ -1168,7 +1145,7 @@ private slots:
         QSignalSpy spy_r1(engine_r1.data(), &EngineReplica::rpmChanged);
         engine_r1->waitForSource();
         QCOMPARE(engine_r1->rpm(), e.rpm());
-        QCOMPARE(spy_r1.count(), 1);
+        QCOMPARE(spy_r1.size(), 1);
 
         // NOTE: A second replica will have initialized and notify signals emitted as part of acquire,
         // which leads to different semantics for first and second replicas. Specifically, there is no
@@ -1223,7 +1200,7 @@ private slots:
 
         // replica gets source change
         source.setValue(1);
-        QTRY_COMPARE(spy.count(), 1);
+        QTRY_COMPARE(spy.size(), 1);
         QCOMPARE(replica->property("value"), QVariant(1));
 
         // source gets replica change
@@ -1239,7 +1216,7 @@ private slots:
 
         // replica gets source change
         source.setOtherValue(1);
-        QTRY_COMPARE(otherSpy.count(), 1);
+        QTRY_COMPARE(otherSpy.size(), 1);
         QCOMPARE(replica->property("otherValue"), QVariant(1));
 
         // source gets replica change
@@ -1337,7 +1314,7 @@ private slots:
         Q_SET_OBJECT_NAME(_client);
         QSignalSpy errorSpy(&_client, &QRemoteObjectNode::error);
         QVERIFY(!_client.connectToNode(QUrl(QLatin1String("invalid:invalid"))));
-        QCOMPARE(errorSpy.count(), 1);
+        QCOMPARE(errorSpy.size(), 1);
         auto emittedErrorCode = errorSpy.first().at(0).value<QRemoteObjectNode::ErrorCode>();
         QCOMPARE(emittedErrorCode, QRemoteObjectNode::RegistryNotAcquired);
         QCOMPARE(_client.lastError(), QRemoteObjectNode::RegistryNotAcquired);
@@ -1354,7 +1331,7 @@ private slots:
         e.setRpm(50);
 
         spy.wait();
-        QCOMPARE(spy.count(), 1);
+        QCOMPARE(spy.size(), 1);
 
         QCOMPARE(engine_d->rpm(), e.rpm());
     }
@@ -1377,8 +1354,8 @@ private slots:
         const QByteArray data(16384,'y');
         emit t.send(data);
         spy.wait();
-        QCOMPARE(spy.count(), 1);
-        const QList<QVariant> &arguments = spy.first();
+        QCOMPARE(spy.size(), 1);
+        const QVariantList &arguments = spy.first();
         QVERIFY(arguments.at(0).toByteArray() == data);
         QVERIFY(host->disableRemoting(&t));
     }
@@ -1431,7 +1408,7 @@ private slots:
         QVERIFY(info.exists());
 
         QRemoteObjectNode localSocketTestClient;
-        const QUrl connection = QUrl(QStringLiteral("local:crashMe"));
+        const QUrl connection = QUrl(QStringLiteral(LOCAL_SOCKET ":crashMe"));
         const QString objectname = QStringLiteral("connectme");
         localSocketTestClient.connectToNode(connection);
         QVERIFY(localSocketTestClient.lastError() == QRemoteObjectNode::NoError);
@@ -1465,7 +1442,7 @@ private slots:
         QVERIFY(info.exists());
 
         QRemoteObjectNode localSocketTestClient;
-        const QUrl connection = QUrl(QStringLiteral("local:crashMe"));
+        const QUrl connection = QUrl(QStringLiteral(LOCAL_SOCKET ":crashMe"));
         const QString objectname = QStringLiteral("connectme");
         localSocketTestClient.connectToNode(connection);
         QVERIFY(localSocketTestClient.lastError() == QRemoteObjectNode::NoError);

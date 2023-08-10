@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017-2015 Ford Motor Company
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtRemoteObjects module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017-2015 Ford Motor Company
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include <QString>
 #include <QDataStream>
@@ -35,6 +10,8 @@
 #include <QtRemoteObjects/QRemoteObjectNode>
 #include "rep_localdatacenter_replica.h"
 #include "rep_localdatacenter_source.h"
+
+#include "../../shared/testutils.h"
 
 class BenchmarksModel : public QAbstractListModel
 {
@@ -98,14 +75,14 @@ BenchmarksTest::BenchmarksTest()
 }
 
 void BenchmarksTest::initTestCase() {
-    m_basicServer.setHostUrl(QUrl(QStringLiteral("local:benchmark_replica")));
+    m_basicServer.setHostUrl(QUrl(QStringLiteral(LOCAL_SOCKET ":benchmark_replica")));
     dataCenterLocal.reset(new LocalDataCenterSimpleSource);
     dataCenterLocal->setData1(5);
     const bool remoted = m_basicServer.enableRemoting(dataCenterLocal.data());
     Q_ASSERT(remoted);
     Q_UNUSED(remoted)
 
-    m_basicClient.connectToNode(QUrl(QStringLiteral("local:benchmark_replica")));
+    m_basicClient.connectToNode(QUrl(QStringLiteral(LOCAL_SOCKET ":benchmark_replica")));
     Q_ASSERT(m_basicClient.lastError() == QRemoteObjectNode::NoError);
 
     m_basicServer.enableRemoting(&m_sourceModel, QStringLiteral("BenchmarkRemoteModel"),
@@ -248,7 +225,7 @@ void BenchmarksTest::benchModelLinearAccess()
     // which are the last 50 items
     QBENCHMARK {
         QRemoteObjectNode localClient;
-        localClient.connectToNode(QUrl(QStringLiteral("local:benchmark_replica")));
+        localClient.connectToNode(QUrl(QStringLiteral(LOCAL_SOCKET ":benchmark_replica")));
         QScopedPointer<QAbstractItemModelReplica> model(localClient.acquireModel(QStringLiteral("BenchmarkRemoteModel")));
         QEventLoop loop;
         QHash<int, QPair<QString, QString>> dataToWait;
@@ -320,7 +297,7 @@ void BenchmarksTest::benchModelRandomAccess()
 {
     QBENCHMARK {
         QRemoteObjectNode localClient;
-        localClient.connectToNode(QUrl(QStringLiteral("local:benchmark_replica")));
+        localClient.connectToNode(QUrl(QStringLiteral(LOCAL_SOCKET ":benchmark_replica")));
         QScopedPointer<QAbstractItemModelReplica> model(localClient.acquireModel(QStringLiteral("BenchmarkRemoteModel")));
         model->setRootCacheSize(5000); // we need to make room for all 5000 rows that we'll use
         QEventLoop loop;
