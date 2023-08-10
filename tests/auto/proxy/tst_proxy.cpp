@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 Ford Motor Company
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtRemoteObjects module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 Ford Motor Company
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "rep_engine_merged.h"
 #include "rep_subclass_merged.h"
@@ -34,12 +9,14 @@
 #include <QRemoteObjectReplica>
 #include <QRemoteObjectNode>
 
-const QUrl localHostUrl = QUrl(QLatin1String("local:testHost"));
+#include "../../shared/testutils.h"
+
+const QUrl localHostUrl = QUrl(QLatin1String(LOCAL_SOCKET ":testHost"));
 const QUrl tcpHostUrl = QUrl(QLatin1String("tcp://127.0.0.1:9989"));
 const QUrl proxyNodeUrl = QUrl(QLatin1String("tcp://127.0.0.1:12123"));
 const QUrl remoteNodeUrl = QUrl(QLatin1String("tcp://127.0.0.1:23234"));
-const QUrl registryUrl = QUrl(QLatin1String("local:testRegistry"));
-const QUrl proxyHostUrl = QUrl(QLatin1String("local:fromProxy"));
+const QUrl registryUrl = QUrl(QLatin1String(LOCAL_SOCKET ":testRegistry"));
+const QUrl proxyHostUrl = QUrl(QLatin1String(LOCAL_SOCKET ":fromProxy"));
 
 #define SET_NODE_NAME(obj) (obj).setName(QLatin1String(#obj))
 
@@ -146,12 +123,12 @@ void ProxyTest::testProxy()
         QSignalSpy replicaSpy(rep, &EngineReplica::rpmChanged);
         rep->pushRpm(42);
         sourceSpy.wait();
-        QCOMPARE(sourceSpy.count(), 1);
+        QCOMPARE(sourceSpy.size(), 1);
         QCOMPARE(engine.rpm(), 42);
 
         // ... and the change makes it back to the replica
         replicaSpy.wait();
-        QCOMPARE(replicaSpy.count(), 1);
+        QCOMPARE(replicaSpy.size(), 1);
         QCOMPARE(rep->rpm(), 42);
     } else {
         replica.reset(client.acquireDynamic(QStringLiteral("Engine")));
@@ -179,12 +156,12 @@ void ProxyTest::testProxy()
         QVERIFY(pushMethod.invoke(replica.data(), Q_ARG(int, 42)));
 
         sourceSpy.wait();
-        QCOMPARE(sourceSpy.count(), 1);
+        QCOMPARE(sourceSpy.size(), 1);
         QCOMPARE(engine.rpm(), 42);
 
         // ... and the change makes it back to the replica
         replicaSpy.wait();
-        QCOMPARE(replicaSpy.count(), 1);
+        QCOMPARE(replicaSpy.size(), 1);
         QCOMPARE(rpmMeta.read(replica.data()).value<int>(), engine.rpm());
     }
 
@@ -193,7 +170,7 @@ void ProxyTest::testProxy()
     Q_ASSERT(res);
     QSignalSpy stateSpy(replica.data(), &QRemoteObjectReplica::stateChanged);
     stateSpy.wait();
-    QCOMPARE(stateSpy.count(), 1);
+    QCOMPARE(stateSpy.size(), 1);
     QCOMPARE(replica->state(), QRemoteObjectReplica::Suspect);
 
     // Now test subclass Source
@@ -221,7 +198,7 @@ void ProxyTest::testProxy()
         QVERIFY(rep->subClass() != nullptr);
         QCOMPARE(rep->subClass()->myPOD(), parent.subClass()->myPOD());
         QVERIFY(rep->tracks() != nullptr);
-        QVERIFY(tracksSpy.count() || tracksSpy.wait());
+        QVERIFY(tracksSpy.size() || tracksSpy.wait());
         // Rep file only uses display role, but proxy doesn't forward that yet
         if (!useProxy)
             QCOMPARE(rep->tracks()->availableRoles(), QList<int> { Qt::DisplayRole });
@@ -263,7 +240,7 @@ void ProxyTest::testProxy()
         QSignalSpy replicaSpy(rep, &ParentClassReplica::subClassChanged);
         parent.setSubClass(&updatedSubclass);
         replicaSpy.wait();
-        QCOMPARE(replicaSpy.count(), 1);
+        QCOMPARE(replicaSpy.size(), 1);
         QCOMPARE(rep->subClass()->myPOD(), parent.subClass()->myPOD());
         QCOMPARE(rep->subClass()->myPOD(), updatedValue);
     } else {
@@ -339,7 +316,7 @@ void ProxyTest::testProxy()
         QSignalSpy replicaSpy(replica.data(), QByteArray(QByteArrayLiteral("2")+subclassMeta.notifySignal().methodSignature().constData()));
         parent.setSubClass(&updatedSubclass);
         replicaSpy.wait();
-        QCOMPARE(replicaSpy.count(), 1);
+        QCOMPARE(replicaSpy.size(), 1);
         subclassQObjectPtr = subclassMeta.read(replica.data()).value<QObject *>();
         QVERIFY(subclassQObjectPtr != nullptr);
         subclassReplica = qobject_cast<QRemoteObjectDynamicReplica *>(subclassQObjectPtr);

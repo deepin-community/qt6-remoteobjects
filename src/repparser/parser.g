@@ -1,41 +1,5 @@
-----------------------------------------------------------------------------
---
 -- Copyright (C) 2014-2020 Ford Motor Company.
--- Contact: https://www.qt.io/licensing/
---
--- This file is part of the QtRemoteObjects module of the Qt Toolkit.
---
--- $QT_BEGIN_LICENSE:LGPL$
--- Commercial License Usage
--- Licensees holding valid commercial Qt licenses may use this file in
--- accordance with the commercial license agreement provided with the
--- Software or, alternatively, in accordance with the terms contained in
--- a written agreement between you and The Qt Company. For licensing terms
--- and conditions see https://www.qt.io/terms-conditions. For further
--- information use the contact form at https://www.qt.io/contact-us.
---
--- GNU Lesser General Public License Usage
--- Alternatively, this file may be used under the terms of the GNU Lesser
--- General Public License version 3 as published by the Free Software
--- Foundation and appearing in the file LICENSE.LGPL3 included in the
--- packaging of this file. Please review the following information to
--- ensure the GNU Lesser General Public License version 3 requirements
--- will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
---
--- GNU General Public License Usage
--- Alternatively, this file may be used under the terms of the GNU
--- General Public License version 2.0 or (at your option) the GNU General
--- Public license version 3 or any later version approved by the KDE Free
--- Qt Foundation. The licenses are as published by the Free Software
--- Foundation and appearing in the file LICENSE.GPL2 and LICENSE.GPL3
--- included in the packaging of this file. Please review the following
--- information to ensure the GNU General Public License requirements will
--- be met: https://www.gnu.org/licenses/gpl-2.0.html and
--- https://www.gnu.org/licenses/gpl-3.0.html.
---
--- $QT_END_LICENSE$
---
-----------------------------------------------------------------------------
+-- SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
 %parser rep_grammar
 %decl repparser.h
@@ -79,7 +43,9 @@
 #include <qregexparser.h>
 #include <QStringList>
 #include <QList>
+#include <QHash>
 #include <QRegularExpression>
+#include <QSet>
 
 QT_BEGIN_NAMESPACE
 class QIODevice;
@@ -457,7 +423,7 @@ void ASTEnum::signature_impl(const AST &ast, QCryptographicHash &checksum)
     Q_UNUSED(ast)
     checksum.addData(name.toLatin1());
     if (isScoped)
-        checksum.addData("class", qstrlen("class"));
+        checksum.addData("class");
     if (!type.isEmpty())
         checksum.addData(type.toLatin1());
     for (const ASTEnumParam &param : params) {
@@ -540,7 +506,7 @@ void ASTClass::signature_impl(const AST &ast, QCryptographicHash &checksum)
         // Treat ReadOnly and SourceOnlySetter the same (interface-wise they are)
         if (m == ASTProperty::SourceOnlySetter)
             m = ASTProperty::ReadOnly;
-        checksum.addData(reinterpret_cast<const char *>(&m), sizeof(m));
+        checksum.addData({reinterpret_cast<const char *>(&m), sizeof(m)});
     }
 
     // Checksum signals
@@ -851,13 +817,13 @@ void RepParser::TypeParser::generateFunctionParameter(QString variableName, cons
 
 void RepParser::TypeParser::appendParams(ASTFunction &slot)
 {
-    for (const ASTDeclaration &arg : qAsConst(arguments))
+    for (const ASTDeclaration &arg : std::as_const(arguments))
         slot.params << arg;
 }
 
 void RepParser::TypeParser::appendPods(POD &pods)
 {
-    for (const ASTDeclaration &arg : qAsConst(arguments)) {
+    for (const ASTDeclaration &arg : std::as_const(arguments)) {
         PODAttribute attr;
         attr.type = arg.type;
         attr.name = arg.name;

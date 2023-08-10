@@ -34,6 +34,7 @@ usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjects/qremoteobjectsettingsstore
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjects/qremoteobjectsource.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjects/qtremoteobjectglobal.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjects/qtremoteobjects-config.h
+usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjects/qtremoteobjectsexports.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjects/qtremoteobjectsversion.h
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjectsQml/QtRemoteObjectsQml
 usr/include/${DEB_HOST_MULTIARCH}/qt6/QtRemoteObjectsQml/QtRemoteObjectsQmlDepends
@@ -71,6 +72,9 @@ usr/lib/${DEB_HOST_MULTIARCH}/libQt6RemoteObjectsQml.prl
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6RemoteObjectsQml.so
 usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6remoteobjects_none_metatypes.json
 usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6remoteobjectsqml_none_metatypes.json
+usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6RemoteObjects.pc
+usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6RemoteObjectsQml.pc
+usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6RepParser.pc
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/remoteobjects_repc.prf
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/repcclient.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/repccommon.pri

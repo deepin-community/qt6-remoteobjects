@@ -1,41 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 Ford Motor Company
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtRemoteObjects module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:LGPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 3 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL3 included in the
-** packaging of this file. Please review the following information to
-** ensure the GNU Lesser General Public License version 3 requirements
-** will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 2.0 or (at your option) the GNU General
-** Public license version 3 or any later version approved by the KDE Free
-** Qt Foundation. The licenses are as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL2 and LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-2.0.html and
-** https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 Ford Motor Company
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
 #include "private/qmetaobjectbuilder_p.h"
 
@@ -60,7 +24,7 @@ QT_BEGIN_NAMESPACE
 using namespace QtRemoteObjects;
 using namespace QRemoteObjectStringLiterals;
 
-using GadgetType = QList<QVariant>;
+using GadgetType = QVariantList;
 
 struct ManagedGadgetTypeEntry
 {
@@ -509,12 +473,12 @@ bool QRemoteObjectHostBase::proxy(const QUrl &registryUrl, const QUrl &hostUrl, 
 
 \code
     // myInternalHost is a node only visible on the device...
-    QRemoteObjectHost myInternalHost("local:MyHost");
+    QRemoteObjectHost myInternalHost("local:MyHost", "local:registry");
 
     // RegistryHost node, listening on port 12123, so visible to other
     // devices.  The node must be a RegistryHost, so the Sources on
     // the "outside" network can be forwarded to the inner network.
-    QRemoteObjectRegistryHost proxyNode("tcp://localhost:12123");
+    QRemoteObjectRegistryHost proxyNode("tcp://0.0.0.0:12123");
 
     // Enable proxying objects from nodes on the local machine's internal
     // QtRO bus.  Note the hostUrl parameter is now needed.
@@ -525,11 +489,10 @@ bool QRemoteObjectHostBase::proxy(const QUrl &registryUrl, const QUrl &hostUrl, 
     And from another device you create another node:
 
 \code
+    // Listen on a local port, and connect to "proxyNode" as the registry.
     // NB: localhost resolves to a different ip address than proxyNode
-    QRemoteObjectHost nodeOnRemoteDevice("tcp://localhost:23234");
-
-    // Connect to the target's proxyNode directly, or use a tcp registry...
-    nodeOnRemoteDevice.connectToNode("tcp://<target device>:12123");
+    QRemoteObjectHost nodeOnRemoteDevice("tcp://localhost:23234",
+                                         "tcp://<target device>:12123");
 
     // Because of the reverseProxy, we can expose objects on this device
     // and they will make their way to proxyNode...
@@ -906,7 +869,7 @@ static int registerGadgets(QtROIoDeviceBase *connection, Gadgets &gadgets, QByte
         dynamicProperty.setReadable(true);
     }
     QList<TypeInfo *> enumsToBeAssignedMetaObject;
-    enumsToBeAssignedMetaObject.reserve(gadget.enums.length());
+    enumsToBeAssignedMetaObject.reserve(gadget.enums.size());
     for (const auto &enumData: gadget.enums) {
         auto enumBuilder = gadgetBuilder.addEnumerator(enumData.name);
         enumBuilder.setIsFlag(enumData.isFlag);
@@ -1459,7 +1422,7 @@ void QRemoteObjectNodePrivate::onClientRead(QObject *obj)
             // We need to make sure all of the source objects are in connectedSources before we add connections,
             // otherwise nested QObjects could fail (we want to acquire children before parents, and the object
             // list is unordered)
-            for (const auto &remoteObject : qAsConst(rxObjects)) {
+            for (const auto &remoteObject : std::as_const(rxObjects)) {
                 qROPrivDebug() << "  connectedSources.contains(" << remoteObject << ")" << connectedSources.contains(remoteObject.name) << replicas.contains(remoteObject.name);
                 if (!connectedSources.contains(remoteObject.name)) {
                     connectedSources[remoteObject.name] = SourceInfo{connection, remoteObject.typeName, remoteObject.signature};
@@ -1469,7 +1432,7 @@ void QRemoteObjectNodePrivate::onClientRead(QObject *obj)
                         handleReplicaConnection(remoteObject.name);
                 }
             }
-            for (const auto &remoteObject : qAsConst(rxObjects)) {
+            for (const auto &remoteObject : std::as_const(rxObjects)) {
                 if (replicas.contains(remoteObject.name)) //We have a replica waiting on this remoteObject
                     handleReplicaConnection(remoteObject.name);
             }
@@ -2667,7 +2630,7 @@ ProxyInfo::ProxyInfo(QRemoteObjectNode *node, QRemoteObjectHostBase *parent,
     , proxyFilter(filter)
 {
     const auto registry = node->registry();
-    proxyNode->setObjectName(QString::fromLatin1("_ProxyNode"));
+    proxyNode->setObjectName(QLatin1String("_ProxyNode"));
 
     connect(registry, &QRemoteObjectRegistry::remoteObjectAdded, this,
             [this](const QRemoteObjectSourceLocation &entry)

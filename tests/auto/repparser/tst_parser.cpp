@@ -1,30 +1,5 @@
-/****************************************************************************
-**
-** Copyright (C) 2017 Ford Motor Company
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtRemoteObjects module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+// Copyright (C) 2017 Ford Motor Company
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 #include "repparser.h"
 
@@ -167,11 +142,11 @@ void tst_Parser::testProperties()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
 
     const ASTClass astClass = ast.classes.first();
     const QList<ASTProperty> properties = astClass.properties;
-    QCOMPARE(properties.count(), 1);
+    QCOMPARE(properties.size(), 1);
 
     const ASTProperty property = properties.first();
     QCOMPARE(property.type, expectedType);
@@ -222,11 +197,11 @@ void tst_Parser::testSlots()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
 
     const ASTClass astClass = ast.classes.first();
     const QList<ASTFunction> slotsList = astClass.slotsList;
-    QCOMPARE(slotsList.count(), 1);
+    QCOMPARE(slotsList.size(), 1);
     ASTFunction slot = slotsList.first();
     QCOMPARE(QString("%1 %2(%3)").arg(slot.returnType).arg(slot.name).arg(slot.paramsAsString()), expectedSlot);
 }
@@ -262,7 +237,7 @@ void tst_Parser::testSignals()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
 
     const ASTClass astClass = ast.classes.first();
     const QList<ASTFunction> signalsList = astClass.signalsList;
@@ -308,16 +283,16 @@ void tst_Parser::testPods()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
 
-    QCOMPARE(ast.pods.count(), 1);
+    QCOMPARE(ast.pods.size(), 1);
     const POD pods = ast.pods.first();
     const QList<PODAttribute> podsList = pods.attributes;
     const QStringList typeList = expectedtypes.split(QLatin1Char(';'));
     const QStringList variableList = expectedvariables.split(QLatin1Char(';'));
-    QVERIFY(typeList.count() == variableList.count());
-    QVERIFY(podsList.count() == variableList.count());
-    for (int i=0; i < podsList.count(); ++i) {
+    QVERIFY(typeList.size() == variableList.size());
+    QVERIFY(podsList.size() == variableList.size());
+    for (int i=0; i < podsList.size(); ++i) {
         QCOMPARE(podsList.at(i).name, variableList.at(i));
         QCOMPARE(podsList.at(i).type, typeList.at(i));
     }
@@ -363,16 +338,16 @@ void tst_Parser::testPods2()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
 
-    QCOMPARE(ast.pods.count(), 1);
+    QCOMPARE(ast.pods.size(), 1);
     const POD pods = ast.pods.first();
     const QVector<PODAttribute> podsList = pods.attributes;
     const QStringList typeList = expectedtypes.split(QLatin1Char(';'));
     const QStringList variableList = expectedvariables.split(QLatin1Char(';'));
-    QVERIFY(typeList.count() == variableList.count());
-    QVERIFY(podsList.count() == variableList.count());
-    for (int i=0; i < podsList.count(); ++i) {
+    QVERIFY(typeList.size() == variableList.size());
+    QVERIFY(podsList.size() == variableList.size());
+    for (int i=0; i < podsList.size(); ++i) {
         QCOMPARE(podsList.at(i).name, variableList.at(i));
         QCOMPARE(podsList.at(i).type, typeList.at(i));
     }
@@ -429,23 +404,23 @@ void tst_Parser::testEnums()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
     ASTEnum enums;
     if (inclass) {
         const ASTClass astClass = ast.classes.first();
-        QCOMPARE(astClass.enums.count(), 1);
+        QCOMPARE(astClass.enums.size(), 1);
         enums = astClass.enums.first();
     } else {
-        QCOMPARE(ast.enums.count(), 1);
+        QCOMPARE(ast.enums.size(), 1);
         enums = ast.enums.first();
     }
     QVERIFY(enums.isScoped == false);
     QVERIFY(enums.type.isEmpty());
     const QList<ASTEnumParam> paramList = enums.params;
     const QStringList nameList = expectednames.split(QLatin1Char(';'));
-    QVERIFY(nameList.count() == expectedvalues.count());
-    QVERIFY(paramList.count() == expectedvalues.count());
-    for (int i=0; i < paramList.count(); ++i) {
+    QVERIFY(nameList.size() == expectedvalues.size());
+    QVERIFY(paramList.size() == expectedvalues.size());
+    for (int i=0; i < paramList.size(); ++i) {
         QCOMPARE(paramList.at(i).name, nameList.at(i));
         QCOMPARE(paramList.at(i).value, expectedvalues.at(i));
     }
@@ -505,17 +480,17 @@ void tst_Parser::testTypedEnums()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
     ASTEnum enums;
     ASTFlag flags;
     if (inclass) {
         const ASTClass astClass = ast.classes.first();
-        QCOMPARE(astClass.enums.count(), 1);
+        QCOMPARE(astClass.enums.size(), 1);
         enums = astClass.enums.first();
         if (isflag)
             flags = astClass.flags.first();
     } else {
-        QCOMPARE(ast.enums.count(), 1);
+        QCOMPARE(ast.enums.size(), 1);
         enums = ast.enums.first();
         if (isflag)
             flags = ast.flags.first();
@@ -526,8 +501,8 @@ void tst_Parser::testTypedEnums()
     QVERIFY(flags._enum == (isflag ? "preset" : QString{}));
     QCOMPARE(enums.type, expectedtype);
     const QList<ASTEnumParam> paramList = enums.params;
-    QVERIFY(paramList.count() == 1);
-    for (int i=0; i < paramList.count(); ++i) {
+    QVERIFY(paramList.size() == 1);
+    for (int i=0; i < paramList.size(); ++i) {
         QCOMPARE(paramList.at(i).name, "presetNumber");
         QCOMPARE(paramList.at(i).value, 0);
     }
@@ -563,7 +538,7 @@ void tst_Parser::testModels()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 1);
+    QCOMPARE(ast.classes.size(), 1);
 
     const ASTClass astClass = ast.classes.first();
     ASTModel model = astClass.modelMetadata.first();
@@ -607,7 +582,7 @@ void tst_Parser::testClasses()
     QVERIFY(parser.parse());
 
     const AST ast = parser.ast();
-    QCOMPARE(ast.classes.count(), 2);
+    QCOMPARE(ast.classes.size(), 2);
 
     const ASTClass astSub = ast.classes.value(0);
     const ASTClass astObj = ast.classes.value(1);
