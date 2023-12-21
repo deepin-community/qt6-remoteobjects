@@ -1,3 +1,22 @@
+qt6-remoteobjects (6.6.1-2) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * Update symbols from buildlogs.
+
+ -- Patrick Franz <deltaone@debian.org>  Fri, 15 Dec 2023 00:13:33 +0100
+
+qt6-remoteobjects (6.6.1-1) experimental; urgency=medium
+
+  [ Patrick Franz ]
+  * New upstream release (6.6.1).
+  * Bump Qt B-Ds to 6.6.1.
+  * Update list of installed files.
+  * Update symbols from buildlogs.
+  * Remove binary package libqt6remoteobjectsqml6.
+  * Update d/copyright.
+
+ -- Patrick Franz <deltaone@debian.org>  Thu, 14 Dec 2023 21:41:17 +0100
+
 qt6-remoteobjects (6.4.2-5) unstable; urgency=medium
 
   * Team upload to unstable.
