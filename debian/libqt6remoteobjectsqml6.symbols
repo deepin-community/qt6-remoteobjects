@@ -1,8 +1,0 @@
-# SymbolsHelper-Confirmed: 6.4.0 amd64
-libQt6RemoteObjectsQml.so.6 libqt6remoteobjectsqml6 #MINVER#
-* Build-Depends-Package: qt6-remoteobjects-dev
- _Z34qml_register_types_QtRemoteObjectsv@Base 6.2.1
- _ZTIFP7QObjectP10QQmlEngineP9QJSEngineE@Base 6.2.1
- _ZTIPFP7QObjectP10QQmlEngineP9QJSEngineE@Base 6.2.1
- _ZTSFP7QObjectP10QQmlEngineP9QJSEngineE@Base 6.2.1
- _ZTSPFP7QObjectP10QQmlEngineP9QJSEngineE@Base 6.2.1

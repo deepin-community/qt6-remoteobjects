@@ -1,4 +1,5 @@
-# Generated from repc.pro.
+# Copyright (C) 2022 The Qt Company Ltd.
+# SPDX-License-Identifier: BSD-3-Clause
 
 #####################################################################
 ## repc Tool:
@@ -9,7 +10,7 @@ set(REPPARSER_DIR "${PROJECT_SOURCE_DIR}/src/repparser")
 qt_get_tool_target_name(target_name repc)
 qt_internal_add_tool(${target_name}
     TARGET_DESCRIPTION "Qt Remote Objects Compiler"
-    TOOLS_TARGET RemoteObjects # special case
+    TOOLS_TARGET RemoteObjects
     INSTALL_DIR "${INSTALL_LIBEXECDIR}"
     SOURCES
         cppcodegenerator.cpp cppcodegenerator.h
@@ -24,21 +25,20 @@ qt_internal_add_tool(${target_name}
         RO_INSTALL_HEADERS=\"$$[QT_INSTALL_HEADERS]/QtRemoteObjects\"
     INCLUDE_DIRECTORIES
         ${REPPARSER_DIR}
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::CorePrivate
 )
+
 qt_internal_return_unless_building_tools()
+
+set_target_properties(${target_name} PROPERTIES UNITY_BUILD OFF)
 
 # QLALR Grammars:
 qt_process_qlalr(
     ${target_name}
     "${REPPARSER_DIR}/parser.g"
-    ""
+    "--exit-on-warn"
 )
-
-#### Keys ignored in scope 1:.:.:repc.pro:<TRUE>:
-# QMAKE_TARGET_DESCRIPTION = "Qt Remote Objects Compiler"
-# _OPTION = "host_build"
 
 ## Scopes:
 #####################################################################

@@ -70,11 +70,11 @@ usr/lib/${DEB_HOST_MULTIARCH}/libQt6RemoteObjects.prl
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6RemoteObjects.so
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6RemoteObjectsQml.prl
 usr/lib/${DEB_HOST_MULTIARCH}/libQt6RemoteObjectsQml.so
-usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6remoteobjects_none_metatypes.json
-usr/lib/${DEB_HOST_MULTIARCH}/metatypes/qt6remoteobjectsqml_none_metatypes.json
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6RemoteObjects.pc
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6RemoteObjectsQml.pc
 usr/lib/${DEB_HOST_MULTIARCH}/pkgconfig/Qt6RepParser.pc
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/metatypes/qt6remoteobjects_none_metatypes.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/metatypes/qt6remoteobjectsqml_none_metatypes.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/remoteobjects_repc.prf
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/repcclient.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/repccommon.pri
@@ -83,6 +83,6 @@ usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/features/repcserver.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_remoteobjects.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_remoteobjectsqml.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_repparser.pri
-usr/share/qt6/modules/RemoteObjects.json
-usr/share/qt6/modules/RemoteObjectsQml.json
-usr/share/qt6/modules/RepParser.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/RemoteObjects.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/RemoteObjectsQml.json
+usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/RepParser.json
