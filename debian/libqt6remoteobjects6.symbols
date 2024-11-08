@@ -1,6 +1,6 @@
 # SymbolsHelper-Confirmed: 6.6.1 amd64 armel armhf hppa i386 powerpc riscv64 sh4
 libQt6RemoteObjects.so.6 libqt6remoteobjects6 #MINVER#
-* Build-Depends-Package: qt6-remoteobjects-dev
+
  Qt_6@Qt_6 6.6.1
  Qt_6_PRIVATE_API@Qt_6_PRIVATE_API 6.6.1
  _Z52qRegisterNormalizedMetaType_QRemoteObjectPendingCallRK10QByteArray@Qt_6 6.6.1
@@ -313,7 +313,7 @@ libQt6RemoteObjects.so.6 libqt6remoteobjects6 #MINVER#
  _ZNK31QRemoteObjectPendingCallWatcher10isFinishedEv@Qt_6 6.6.1
  _ZNK31QRemoteObjectPendingCallWatcher10metaObjectEv@Qt_6 6.6.1
  _ZNK35QRemoteObjectAbstractPersistedStore10metaObjectEv@Qt_6 6.6.1
- _ZSt19piecewise_construct@Qt_6 6.6.1
+
  _ZTI12SourceApiMap@Qt_6 6.6.1
  _ZTI16QtROIoDeviceBase@Qt_6 6.6.1
  _ZTI17QRemoteObjectHost@Qt_6 6.6.1
@@ -333,9 +333,9 @@ libQt6RemoteObjects.so.6 libqt6remoteobjects6 #MINVER#
  _ZTI35QRemoteObjectAbstractPersistedStore@Qt_6 6.6.1
  (arch=armel riscv64)_ZTIN9__gnu_cxx7__mutexE@Qt_6 6.6.1
  (arch=armel riscv64)_ZTISt11_Mutex_baseILN9__gnu_cxx12_Lock_policyE1EE@Qt_6 6.6.1
- (arch=!armel !riscv64)_ZTISt11_Mutex_baseILN9__gnu_cxx12_Lock_policyE2EE@Qt_6 6.6.1
+
  (arch=armel riscv64)_ZTISt16_Sp_counted_baseILN9__gnu_cxx12_Lock_policyE1EE@Qt_6 6.6.1
- (arch=!armel !riscv64)_ZTISt16_Sp_counted_baseILN9__gnu_cxx12_Lock_policyE2EE@Qt_6 6.6.1
+
  _ZTIZN9QMetaType17registerConverterI5QHashI7QString31QRemoteObjectSourceLocationInfoE9QIterableI16QMetaAssociationEN9QtPrivate34QAssociativeIterableConvertFunctorIS4_EEEEbT1_EUlPKvPvE_@Qt_6 6.6.1
  _ZTIZN9QMetaType17registerConverterI5QHashIi10QByteArrayE9QIterableI16QMetaAssociationEN9QtPrivate34QAssociativeIterableConvertFunctorIS3_EEEEbT1_EUlPKvPvE_@Qt_6 6.6.1
  _ZTIZN9QMetaType17registerConverterI5QListI21QPersistentModelIndexE9QIterableI13QMetaSequenceEN9QtPrivate33QSequentialIterableConvertFunctorIS3_EEEEbT1_EUlPKvPvE_@Qt_6 6.6.1
@@ -367,9 +367,9 @@ libQt6RemoteObjects.so.6 libqt6remoteobjects6 #MINVER#
  _ZTS35QRemoteObjectAbstractPersistedStore@Qt_6 6.6.1
  (arch=armel riscv64)_ZTSN9__gnu_cxx7__mutexE@Qt_6 6.6.1
  (arch=armel riscv64)_ZTSSt11_Mutex_baseILN9__gnu_cxx12_Lock_policyE1EE@Qt_6 6.6.1
- (arch=!armel !riscv64)_ZTSSt11_Mutex_baseILN9__gnu_cxx12_Lock_policyE2EE@Qt_6 6.6.1
+
  (arch=armel riscv64)_ZTSSt16_Sp_counted_baseILN9__gnu_cxx12_Lock_policyE1EE@Qt_6 6.6.1
- (arch=!armel !riscv64)_ZTSSt16_Sp_counted_baseILN9__gnu_cxx12_Lock_policyE2EE@Qt_6 6.6.1
+
  _ZTSZN9QMetaType17registerConverterI5QHashI7QString31QRemoteObjectSourceLocationInfoE9QIterableI16QMetaAssociationEN9QtPrivate34QAssociativeIterableConvertFunctorIS4_EEEEbT1_EUlPKvPvE_@Qt_6 6.6.1
  _ZTSZN9QMetaType17registerConverterI5QHashIi10QByteArrayE9QIterableI16QMetaAssociationEN9QtPrivate34QAssociativeIterableConvertFunctorIS3_EEEEbT1_EUlPKvPvE_@Qt_6 6.6.1
  _ZTSZN9QMetaType17registerConverterI5QListI21QPersistentModelIndexE9QIterableI13QMetaSequenceEN9QtPrivate33QSequentialIterableConvertFunctorIS3_EEEEbT1_EUlPKvPvE_@Qt_6 6.6.1

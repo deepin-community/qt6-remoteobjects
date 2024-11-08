@@ -86,3 +86,6 @@ usr/lib/${DEB_HOST_MULTIARCH}/qt6/mkspecs/modules/qt_lib_repparser.pri
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/RemoteObjects.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/RemoteObjectsQml.json
 usr/lib/${DEB_HOST_MULTIARCH}/qt6/modules/RepParser.json
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6RemoteObjects/Qt6RemoteObjectsVersionlessAliasTargets.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6RemoteObjectsQml/Qt6RemoteObjectsQmlVersionlessAliasTargets.cmake
+usr/lib/${DEB_HOST_MULTIARCH}/cmake/Qt6RepParser/Qt6RepParserVersionlessAliasTargets.cmake
