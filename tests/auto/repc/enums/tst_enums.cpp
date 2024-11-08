@@ -1,5 +1,5 @@
 // Copyright (C) 2017-2020 Ford Motor Company
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 #include "rep_enums_replica.h"
 
@@ -13,6 +13,7 @@ class tst_Enums : public QObject {
 
 private Q_SLOTS:
     void testMarshalling();
+    void testEnumContainingENUM();
 };
 
 void tst_Enums::testMarshalling()
@@ -48,6 +49,16 @@ void tst_Enums::testMarshalling()
         QCOMPARE(format6, int(Qt::Saturday));
         QCOMPARE(format7, int(Qt::Sunday));
     }
+}
+
+void tst_Enums::testEnumContainingENUM()
+{
+    // We mostly just want to make sure the generation for this doesn't change,
+    // so test using the type name and the value of the first entry:
+    XENUMxEnum::XENUMx xenum = XENUMxEnum::Foo;
+    QCOMPARE(int(xenum), 0);
+    ENUM_Enum::ENUM_ enum_ = ENUM_Enum::Foo;
+    QCOMPARE(int(enum_), 0);
 }
 
 QTEST_APPLESS_MAIN(tst_Enums)

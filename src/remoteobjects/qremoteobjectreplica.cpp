@@ -119,8 +119,10 @@ QConnectedReplicaImplementation::~QConnectedReplicaImplementation()
         sendCommand();
     }
     for (auto prop : m_propertyStorage) {
-        if (prop.canConvert<QObject*>())
-            prop.value<QObject *>()->deleteLater();
+        if (prop.canConvert<QObject*>()) {
+            if (auto o = prop.value<QObject*>())
+                o->deleteLater();
+        }
     }
 }
 
@@ -767,10 +769,9 @@ bool QRemoteObjectReplica::isInitialized() const
 }
 
 /*!
-    Returns \c true if this replica has been initialized with data from the
-    \l {Source} object.  Returns \c false otherwise.
+    Returns the current \l {QRemoteObjectReplica::State}{state} of the replica.
 
-    \sa isInitialized()
+    \sa isInitialized
 */
 QRemoteObjectReplica::State QRemoteObjectReplica::state() const
 {

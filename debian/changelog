@@ -1,3 +1,9 @@
+qt6-remoteobjects (6.8.0-0deepin) UNRELEASED; urgency=medium
+
+  * New upstream release (6.8.0).
+
+ -- lichenggang <lichenggang@deepin.org>  Fri, 08 Nov 2024 16:31:22 +0800
+
 qt6-remoteobjects (6.6.1-2) experimental; urgency=medium
 
   [ Patrick Franz ]
