@@ -1,3 +1,9 @@
+qt6-remoteobjects (6.8.0-0deepin2) unstable; urgency=medium
+
+  * Rebuild with LTO enabled (dpkg vendor feature optimize/lto).
+
+ -- tunaichao <tunaichao@uniontech.com>  Fri, 11 Sep 2026 17:46:50 +0800
+
 qt6-remoteobjects (6.8.0-0deepin1) unstable; urgency=medium
 
   * update symbols 
