@@ -1,5 +1,6 @@
 // Copyright (C) 2021 Ford Motor Company
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:critical reason:data-parser
 
 #ifndef QTREMOTEOBJECTPACKET_P_H
 #define QTREMOTEOBJECTPACKET_P_H
@@ -19,11 +20,11 @@
 #include "qremoteobjectsource.h"
 #include "qconnectionfactories.h"
 
-#include <QtCore/qassociativeiterable.h>
 #include <QtCore/qhash.h>
 #include <QtCore/qmap.h>
 #include <QtCore/qpair.h>
-#include <QtCore/qsequentialiterable.h>
+#include <QtCore/qmetaassociation.h>
+#include <QtCore/qmetasequence.h>
 #include <QtCore/qurl.h>
 #include <QtCore/qvariant.h>
 #include <QtCore/qloggingcategory.h>

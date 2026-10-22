@@ -1,5 +1,6 @@
 // Copyright (C) 2017-2015 Ford Motor Company
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:critical reason:data-parser-and-backend-provider
 
 #include "qconnectionfactories_p.h"
 #include "qremoteobjectpacket_p.h"
@@ -54,7 +55,7 @@ inline bool fromDataStream(QDataStream &in, QRemoteObjectPacketTypeEnum &type, Q
     return true;
 }
 
-/*!
+/*
     All communication between nodes happens through some form of QIODevice with
     an associated QDataStream to handle marshalling of Qt types. QtROIoDeviceBase
     is an abstract base class that provides a consistent interface to QtRO, yet
@@ -185,7 +186,7 @@ void QtROClientIoDevice::setUrl(const QUrl &url)
     d->m_url = url;
 }
 
-/*!
+/*
     The Qt servers create QIODevice derived classes from handleConnection. The
     problem is that they behave differently, so this class adds some
     consistency.
@@ -348,7 +349,7 @@ QtROClientFactory *QtROClientFactory::instance()
         QRemoteObjectNode client(QUrl(QStringLiteral("myprotocol:registry")));
     \endcode
 
-    \sa {qRegisterRemoteObjectsServer}
+    \sa {qRegisterRemoteObjectsClient}
 */
 
 QtROIoDeviceBasePrivate::QtROIoDeviceBasePrivate() : QObjectPrivate()

@@ -11,9 +11,15 @@ project(QtRemoteObjects
     LANGUAGES CXX C
 )
 
-find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS BuildInternals Core Network)
-find_package(Qt6 ${PROJECT_VERSION} CONFIG OPTIONAL_COMPONENTS Gui Widgets Quick QuickTest Bluetooth)
+find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS BuildInternals)
+
+# This should be called as early as possible, just after find_package(BuildInternals) where it is
+# defined.
 qt_internal_project_setup()
+
+find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS Core Network)
+find_package(Qt6 ${PROJECT_VERSION} CONFIG OPTIONAL_COMPONENTS Gui Widgets Quick QuickTest Bluetooth
+    WebSockets)
 
 if(NOT TARGET Qt::Network)
     message(NOTICE "Skipping the build as the condition \"TARGET Qt::Network\" is not met.")
@@ -21,7 +27,7 @@ if(NOT TARGET Qt::Network)
 endif()
 qt_build_repo()
 
-if(NOT QT_BUILD_STANDALONE_TESTS)
+if(NOT QT_BUILD_STANDALONE_TESTS AND NOT QT_BUILD_STANDALONE_EXAMPLES)
     # Copy mkspecs for users preferring qmake builds
     set(mkspecs_install_dir "${INSTALL_MKSPECSDIR}")
     qt_path_join(mkspecs_install_dir ${QT_INSTALL_DIR} ${mkspecs_install_dir})

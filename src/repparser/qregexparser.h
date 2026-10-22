@@ -1,6 +1,7 @@
 // Copyright (C) 2017-2020 Ford Motor Company.
 // Copyright (C) 2017 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:significant reason:parsing-build-time-only
 
 #ifndef QREGEXPARSER_H
 #define QREGEXPARSER_H
@@ -14,14 +15,14 @@
 #include <QtCore/qtextstream.h>
 #include <QtCore/qdebug.h>
 
+QT_BEGIN_NAMESPACE
+
 struct MatchCandidate {
     MatchCandidate(const QString &n, const QString &t, int i) : name(n), matchText(t), index(i) {}
     QString name;
     QString matchText;
     int index;
 };
-
-QT_BEGIN_NAMESPACE
 
 template <typename _Parser, typename _Table>
 class QRegexParser: protected _Table
