@@ -53,7 +53,7 @@ void tst_Parser::testBasic_data()
     QTest::newRow("empty class with comment") << "class MyClass {\n//comment\n}";
     QTest::newRow("empty exported class with comment") << "class Q_DECL_EXPORT MyClass {\n//comment\n}";
     QTest::newRow("comment, class") << "//comment\nclass MyClass {}";
-    QTest::newRow("multicomment, class") << "/* row1\n row2\n */\nclass MyClass {}";
+    QTest::newRow("multicomment, class") << "/* row1\n row2\n */\nclass MyClass {}\n /* trailing */";
     QTest::newRow("include, comment, class") << "#include \"foo\"\n//comment\nclass MyClass {}";
 }
 
@@ -62,7 +62,7 @@ void tst_Parser::testBasic()
     QFETCH(QString, content);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << content << Qt::endl;
     file.seek(0);
@@ -133,7 +133,7 @@ void tst_Parser::testProperties()
     QFETCH(bool, expectedPersistence);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << "class TestClass" << Qt::endl;
     stream << "{" << Qt::endl;
@@ -189,7 +189,7 @@ void tst_Parser::testSlots()
     QFETCH(bool, voidWarning);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << "class TestClass" << Qt::endl;
     stream << "{" << Qt::endl;
@@ -234,7 +234,7 @@ void tst_Parser::testSignals()
     QFETCH(QString, expectedSignal);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << "class TestClass" << Qt::endl;
     stream << "{" << Qt::endl;
@@ -284,7 +284,7 @@ void tst_Parser::testPods()
     QFETCH(QString, expectedvariables);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << podsdeclaration << Qt::endl;
     stream << "class TestClass" << Qt::endl;
@@ -343,7 +343,7 @@ void tst_Parser::testPods2()
     QFETCH(QString, expectedvariables);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << podsdeclaration << Qt::endl;
     stream << "class TestClass" << Qt::endl;
@@ -374,7 +374,7 @@ void tst_Parser::testPods2()
 void tst_Parser::testCompilerAttributes()
 {
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << "POD Q_DECL_EXPORT TestPod(int number)" << Qt::endl;
     stream << "class Q_DECL_EXPORT TestClass" << Qt::endl;
@@ -437,7 +437,7 @@ void tst_Parser::testEnums()
     QFETCH(bool, inclass);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     if (!inclass)
         stream << enumdeclaration << Qt::endl;
@@ -507,7 +507,7 @@ void tst_Parser::testTypedEnums()
     QFETCH(bool, isflag);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     if (!inclass) {
         stream << " // comment 1" << Qt::endl;
@@ -578,7 +578,7 @@ void tst_Parser::testModels()
     QFETCH(QList<ASTModelRole>, expectedRoles);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << " // comment 1" << Qt::endl;
     stream << " // comment 2" << Qt::endl;
@@ -626,7 +626,7 @@ void tst_Parser::testClasses()
     QFETCH(QString, expectedName);
 
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << " // comment 1" << Qt::endl;
     stream << " // comment 2" << Qt::endl;
@@ -698,7 +698,7 @@ void tst_Parser::testInvalid()
 
     QTest::ignoreMessage(QtWarningMsg, QRegularExpression(warning));
     QTemporaryFile file;
-    file.open();
+    QVERIFY(file.open());
     QTextStream stream(&file);
     stream << content << Qt::endl;
     file.seek(0);

@@ -39,8 +39,8 @@ private slots:
 
     void testRun()
     {
-#ifdef Q_OS_ANDROID
-        QSKIP("QProcess doesn't support running user bundled binaries on Android");
+#if defined(Q_OS_ANDROID) || defined(Q_OS_HARMONY)
+        QSKIP("QProcess doesn't support running user bundled binaries on Android or HarmonyOS");
 #endif
         QFETCH(bool, templated);
         QFETCH(ObjectMode, objectMode);

@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Ford Motor Company
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:significant reason:default
 
 #ifndef QREMOTEOBJECTNODE_H
 #define QREMOTEOBJECTNODE_H
@@ -45,8 +46,9 @@ protected:
 class Q_REMOTEOBJECTS_EXPORT QRemoteObjectNode : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QUrl registryUrl READ registryUrl WRITE setRegistryUrl)
-    Q_PROPERTY(QRemoteObjectAbstractPersistedStore* persistedStore READ persistedStore WRITE setPersistedStore)
+    Q_PROPERTY(QUrl registryUrl READ registryUrl WRITE setRegistryUrl NOTIFY registryUrlChanged)
+    Q_PROPERTY(QRemoteObjectAbstractPersistedStore *persistedStore READ persistedStore WRITE
+                       setPersistedStore NOTIFY persistedStoreChanged)
     Q_PROPERTY(int heartbeatInterval READ heartbeatInterval WRITE setHeartbeatInterval NOTIFY heartbeatIntervalChanged)
 
 public:
@@ -115,6 +117,9 @@ Q_SIGNALS:
     void remoteObjectAdded(const QRemoteObjectSourceLocation &);
     void remoteObjectRemoved(const QRemoteObjectSourceLocation &);
 
+    Q_REVISION(6, 12) void registryUrlChanged(const QUrl &registryUrl);
+    Q_REVISION(6, 12)
+    void persistedStoreChanged(QRemoteObjectAbstractPersistedStore *persistedStore);
     void error(QRemoteObjectNode::ErrorCode errorCode);
     void heartbeatIntervalChanged(int heartbeatInterval);
 

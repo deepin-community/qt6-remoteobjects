@@ -1,5 +1,6 @@
 -- Copyright (C) 2014-2020 Ford Motor Company.
 -- SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+-- Qt-Security score:significant reason:parsing-build-time-only
 
 %parser rep_grammar
 %decl repparser.h
@@ -27,7 +28,7 @@
 %token comma "[comma],"
 %token equals "[equals]="
 %token comment "[comment](?<comment>[ \\t]*//[^\\n]*\\n)"
-%token mcomment "[mcomment,M](?<comment>/\\*(.*?)\\*/)"
+%token mcomment "[mcomment,M](?<comment>[ \\t]*/\\*(.*?)\\*/)"
 %token preprocessor_directive "[preprocessor_directive](?<preprocessor_directive>#[ \\t]*[^\\n]*\\n)"
 %token newline "[newline](\\r)?\\n"
 %token tstart "[tstart]<"
@@ -140,8 +141,6 @@ struct ASTEnumParam
           value(paramValue)
     {
     }
-
-    QString asString() const;
 
     QString name;
     int value;

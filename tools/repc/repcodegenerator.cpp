@@ -107,10 +107,10 @@ static QList<ASTFunction> transformEnumParams(const ASTClass& classContext,
 */
 static bool isBuiltinType(const QString &type)
  {
-    const auto metaType = QMetaType::fromName(type.toLatin1().constData());
-    if (!metaType.isValid())
-        return false;
-    return (metaType.id() < QMetaType::User);
+#define CHECK_FOR_BUILT_IN_TYPE(TypeName, Id, Name) if (type == QStringLiteral(#Name)) return true;
+    QT_FOR_EACH_STATIC_TYPE(CHECK_FOR_BUILT_IN_TYPE)
+#undef CHECK_FOR_BUILT_IN_TYPE
+    return false;
 }
 
 RepCodeGenerator::RepCodeGenerator(QIODevice *outputDevice, const AST &ast)
@@ -735,6 +735,11 @@ void RepCodeGenerator::generateClass(Mode mode, const ASTClass &astClass,
                 m_stream << "        properties << QVariant::fromValue(("
                          << typeForMode(property, mode) << ")" << property.defaultValue
                          << ");" << Qt::endl;
+            else if (typeForMode(property, mode) == "QString"_L1
+                     && !property.defaultValue.isEmpty())
+                m_stream << "        properties << QVariant::fromValue("
+                         << "u" << property.defaultValue << "_s"
+                         << ");" << Qt::endl; // Use string literal syntax for QString
             else
                 m_stream << "        properties << QVariant::fromValue("
                          << typeForMode(property, mode) << "(" << property.defaultValue

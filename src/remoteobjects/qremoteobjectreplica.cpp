@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Ford Motor Company
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:critical reason:network-protocol
 
 #include "qremoteobjectreplica.h"
 #include "qremoteobjectreplica_p.h"
@@ -118,7 +119,7 @@ QConnectedReplicaImplementation::~QConnectedReplicaImplementation()
         connectionToSource->d_func()->m_codec->serializeRemoveObjectPacket(m_objectName);
         sendCommand();
     }
-    for (auto prop : m_propertyStorage) {
+    for (const auto &prop : std::as_const(m_propertyStorage)) {
         if (prop.canConvert<QObject*>()) {
             if (auto o = prop.value<QObject*>())
                 o->deleteLater();
@@ -283,7 +284,8 @@ void QRemoteObjectReplicaImplementation::setDynamicProperties(QVariantList &&val
 void QConnectedReplicaImplementation::setDynamicProperties(QVariantList &&values)
 {
     QRemoteObjectReplicaImplementation::setDynamicProperties(std::move(values));
-    for (QRemoteObjectReplica *obj : std::exchange(m_parentsNeedingConnect, {}))
+    const auto parentsNeedingConnect = std::exchange(m_parentsNeedingConnect, {});
+    for (QRemoteObjectReplica *obj : parentsNeedingConnect)
         configurePrivate(obj);
 
     Q_ASSERT(m_state.loadAcquire() < QRemoteObjectReplica::Valid);
@@ -480,11 +482,16 @@ void QConnectedReplicaImplementation::setDisconnected()
     Q_ASSERT(connectionToSource);
     connectionToSource.clear();
     setState(QRemoteObjectReplica::State::Suspect);
-    for (const int index : childIndices()) {
+    const auto childIds = childIndices();
+    for (const int index : childIds) {
         auto pointerToQObject = qvariant_cast<QObject *>(getProperty(index));
         auto child = qobject_cast<QRemoteObjectReplica *>(pointerToQObject);
-        if (child)
-            static_cast<QConnectedReplicaImplementation *>(child->d_impl.data())->setDisconnected();
+        if (child) {
+            QConnectedReplicaImplementation *childReplicaImplData
+                    = static_cast<QConnectedReplicaImplementation *>(child->d_impl.data());
+            if (childReplicaImplData && !childReplicaImplData->connectionToSource.isNull())
+                childReplicaImplData->setDisconnected();
+        }
     }
 }
 
@@ -827,6 +834,11 @@ bool QRemoteObjectReplica::waitForSource(int timeout)
     return d_impl->waitForSource(timeout);
 }
 
+/*!
+ *  \class QInProcessReplicaImplementation
+ *  \inmodule QtRemoteObjects
+ *  \internal
+ */
 QInProcessReplicaImplementation::QInProcessReplicaImplementation(const QString &name, const QMetaObject *meta, QRemoteObjectNode * node)
     : QRemoteObjectReplicaImplementation(name, meta, node)
 {

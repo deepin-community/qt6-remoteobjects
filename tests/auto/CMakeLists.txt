@@ -3,7 +3,9 @@
 
 
 add_subdirectory(benchmarks)
-add_subdirectory(cmake)
+if(NOT (WIN32 AND CMAKE_CROSSCOMPILING))
+    add_subdirectory(cmake)
+endif()
 add_subdirectory(modelreplica)
 add_subdirectory(modelview)
 add_subdirectory(pods)
@@ -15,6 +17,7 @@ add_subdirectory(repc)
 add_subdirectory(repcodegenerator)
 add_subdirectory(repcinlib)
 add_subdirectory(repparser)
+add_subdirectory(stringliteral)
 add_subdirectory(subclassreplica)
 if(QT_FEATURE_ssl)
     add_subdirectory(external_IODevice)

@@ -1,5 +1,6 @@
 // Copyright (C) 2021 Ford Motor Company
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:significant reason:declarations-only
 
 #ifndef QREMOTEOBJECTCONTAINERS_P_H
 #define QREMOTEOBJECTCONTAINERS_P_H
@@ -15,8 +16,8 @@
 // We mean it.
 //
 
-#include <QtCore/qassociativeiterable.h>
-#include <QtCore/qsequentialiterable.h>
+#include <QtCore/qmetaassociation.h>
+#include <QtCore/qmetasequence.h>
 #include <QtCore/qvariant.h>
 #include <QtCore/private/qglobal_p.h>
 
@@ -26,7 +27,7 @@ class QtROSequentialContainer : public QVariantList
 {
 public:
     QtROSequentialContainer() = default;
-    QtROSequentialContainer(const QSequentialIterable &lst)
+    QtROSequentialContainer(const QMetaSequence::Iterable &lst)
     {
         m_valueType = lst.metaContainer().valueMetaType();
         reserve(lst.size());
@@ -52,13 +53,13 @@ class QtROAssociativeContainer : public QVariantMap
 {
 public:
     QtROAssociativeContainer() = default;
-    QtROAssociativeContainer(const QAssociativeIterable &map)
+    QtROAssociativeContainer(const QMetaAssociation::Iterable &map)
     {
         m_keyType = map.metaContainer().keyMetaType();
         m_valueType = map.metaContainer().mappedMetaType();
         m_keys.reserve(map.size());
-        QAssociativeIterable::const_iterator iter = map.begin();
-        const QAssociativeIterable::const_iterator end = map.end();
+        QMetaAssociation::Iterable::const_iterator iter = map.begin();
+        const QMetaAssociation::Iterable::const_iterator end = map.end();
         for ( ; iter != end; ++iter) {
             m_keys.append(iter.key());
             insert(iter.key().toString(), iter.value());

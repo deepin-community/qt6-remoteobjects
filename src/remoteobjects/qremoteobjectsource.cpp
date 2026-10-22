@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Ford Motor Company
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+// Qt-Security score:critical reason:data-parser
 
 #include "qremoteobjectsource.h"
 #include "qremoteobjectsource_p.h"
@@ -128,6 +129,12 @@ int qtro_method_index_impl(const QMetaObject * staticMetaObj, const char *classN
 
 } // namespace QtPrivate
 
+QByteArray QtPrivate::qtro_enum_signature_impl(const QMetaObject &mo, const char *enumName)
+{
+    const auto qme = mo.enumerator(mo.indexOfEnumerator(enumName));
+    return QByteArrayView(qme.scope()) % "::" % qme.name();
+}
+
 QByteArray QtPrivate::qtro_classinfo_signature(const QMetaObject *metaObject)
 {
     if (!metaObject)
@@ -197,7 +204,8 @@ QRemoteObjectSourceBase::QRemoteObjectSourceBase(QObject *obj, Private *d, const
                     else {
                         roles.clear();
                         const auto knownRoles = model->roleNames();
-                        for (auto role : modelInfo.roles.split('|')) {
+                        const auto modelInfoRoles = modelInfo.roles.split('|');
+                        for (const auto &role : modelInfoRoles) {
                             if (role.isEmpty())
                                 continue;
                             const int roleIndex = knownRoles.key(role, -1);
@@ -320,42 +328,43 @@ void QRemoteObjectSourceBase::resetObject(QObject *newObject)
         return;
 
     if (!newObject) {
-        for (auto child : m_children)
+        for (const auto &child : std::as_const(m_children))
             child->resetObject(nullptr);
         return;
     }
 
-    for (int i : m_children.keys()) {
+    for (const auto &[i, val] : std::as_const(m_children).asKeyValueRange()) {
         const int index = m_api->sourcePropertyIndex(i);
         const auto property = m_object->metaObject()->property(index);
         QObject *child = property.read(m_object).value<QObject *>();
-        m_children[i]->resetObject(child);
+        val->resetObject(child);
     }
 }
 
 QRemoteObjectSource::~QRemoteObjectSource()
 {
-    for (auto it : m_children) {
+    for (const auto &it : std::as_const(m_children)) {
         // We used QPointers for m_children because we don't control the lifetime of child QObjects
         // Since the this/source QObject's parent is the referenced QObject, it could have already
         // been deleted
-        delete it;
+        delete it.data();
     }
 }
 
 QRemoteObjectRootSource::~QRemoteObjectRootSource()
 {
-    for (auto it : m_children) {
+    for (const auto &it : std::as_const(m_children)) {
         // We used QPointers for m_children because we don't control the lifetime of child QObjects
         // Since the this/source QObject's parent is the referenced QObject, it could have already
         // been deleted
-        delete it;
+        delete it.data();
     }
     d->m_sourceIo->unregisterSource(this);
     // removeListener tries to modify d->m_listeners, this is O(N²),
     // so clear d->m_listeners prior to calling unregister (consume loop).
     // We can do this, because we don't care about the return value of removeListener() here.
-    for (QtROIoDeviceBase *io : std::exchange(d->m_listeners, {})) {
+    const auto listeners = std::exchange(d->m_listeners, {});
+    for (QtROIoDeviceBase *io : listeners) {
         removeListener(io, true);
     }
     delete d;
